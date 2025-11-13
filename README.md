@@ -12,7 +12,7 @@ sudo apt install python3
 ## 2. Загрузите скрипт:
 
 ```bash
-curl -o vps_autosetup.sh https://raw.githubusercontent.com/vrzdrb/amnezia2vless/blob/main/amnezia2vless
+curl -o amnezia2vless.py https://raw.githubusercontent.com/vrzdrb/amnezia2vless/blob/main/amnezia2vless
 ```
 или
 ```bash
