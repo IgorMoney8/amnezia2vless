@@ -4,7 +4,122 @@ import os
 
 def convert_json_to_vless(json_file, custom_name):
     if not os.path.exists(json_file):
-        raise FileNotFoundError(f"Файл {json_file} не найден!")
+        raise FileNotFoundError({
+    "dns": {
+        "queryStrategy": "UseIP",
+        "servers": [
+            "8.8.8.8",
+            "8.8.4.4"
+        ]
+    },
+    "inbounds": [
+        {
+            "listen": "127.0.0.1",
+            "port": 10808,
+            "protocol": "socks",
+            "settings": {
+                "auth": "noauth",
+                "udp": true
+            },
+            "sniffing": {
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ],
+                "enabled": true,
+                "routeOnly": false
+            },
+            "tag": "socks"
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 10809,
+            "protocol": "http",
+            "settings": {
+                "allowTransparent": false
+            },
+            "sniffing": {
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ],
+                "enabled": true,
+                "routeOnly": false
+            },
+            "tag": "http"
+        }
+    ],
+    "meta": null,
+    "outbounds": [
+        {
+            "fragment": {
+                "interval": "10-20",
+                "length": "50-100",
+                "packets": "tlshello"
+            },
+            "protocol": "vless",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "universal1.unitedbeavers.com",
+                        "port": 443,
+                        "users": [
+                            {
+                                "encryption": "none",
+                                "flow": "xtls-rprx-vision",
+                                "id": "940b3509-0f9d-4a1e-b8a9-c31b33a5374c"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "realitySettings": {
+                    "fingerprint": "qq",
+                    "publicKey": "V6FabatADtcX7aO9KMjGCadJC4LuQ_5nRViab-z-nFQ",
+                    "serverName": "eh.vk.com",
+                    "shortId": "37",
+                    "show": false
+                },
+                "security": "reality"
+            },
+            "tag": "proxy"
+        },
+        {
+            "protocol": "freedom",
+            "tag": "direct"
+        },
+        {
+            "protocol": "blackhole",
+            "tag": "block"
+        }
+    ],
+    "remarks": "🇳🇱 LTE Универсальный №1 🏳️",
+    "routing": {
+        "domainMatcher": "hybrid",
+        "domainStrategy": "IPIfNonMatch",
+        "rules": [
+            {
+                "outboundTag": "direct",
+                "protocol": [
+                    "bittorrent"
+                ],
+                "type": "field"
+            },
+            {
+                "domain": [
+                    "full:universal1.unitedbeavers.com"
+                ],
+                "outboundTag": "direct",
+                "type": "field"
+            }
+        ]
+    }
+}
+)
     with open(json_file, 'r') as f:
         config = json.load(f)
     outbound = config['outbounds'][0]
